@@ -45,6 +45,8 @@
     />
     <br>
     <nuxt-picture
+        imgClass="foo"
+        data-test="test"
         src="/logos/nuxt.png"
         sizes="lg:50vw md:100vw"
         loading="lazy"

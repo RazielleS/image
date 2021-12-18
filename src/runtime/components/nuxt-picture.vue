@@ -8,6 +8,7 @@
     >
     <img
       v-bind="nImgAttrs"
+      :class="imgClass"
       :src="nSources[0].src"
       :srcset="nSources[0].srcset"
       :sizes="nSources[0].sizes"
@@ -26,8 +27,10 @@ const defineComponent: DefineComponentWithMixin = (opts: any) => opts
 
 export default defineComponent({
   name: 'NuxtPicture',
+  inheritAttrs: false,
   mixins: [imageMixin],
   props: {
+    imgClass: { type: String, default: '' },
     legacyFormat: { type: String, default: null }
   },
   computed: {
