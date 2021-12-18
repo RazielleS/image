@@ -1,0 +1,16 @@
+declare const _default: import("vue/types/vue").ExtendedVue<import("vue").default, unknown, unknown, {
+    isTransparent: boolean;
+    originalFormat: string;
+    nFormat: string;
+    nLegacyFormat: string;
+    nSources: {
+        srcset: string;
+        src?: string;
+        type?: string;
+        sizes?: string;
+    }[];
+}, {
+    imgClass: string;
+    legacyFormat: string;
+}>;
+export default _default;
