@@ -4,6 +4,7 @@ import type { ImageOptions, ImageSizesOptions, CreateImageOptions, ResolvedImage
 import { imageMeta } from './utils/meta'
 import { parseSize } from './utils'
 import { useStaticImageMap } from './utils/static-map'
+import objectContaining = jasmine.objectContaining;
 
 export function createImage (globalOptions: CreateImageOptions, nuxtContext: any) {
   const staticImageManifest: Record<string, string> = (process.client && process.static) ? useStaticImageMap(nuxtContext) : {}
@@ -158,6 +159,13 @@ function getPreset (ctx: ImageCTX, name?: string): ImageOptions {
   return ctx.options.presets[name]
 }
 
+function getNextSize(key: string, obj: Object, screenWidths: Record<string, number>) {
+  const sortingArr = Object.keys(screenWidths)
+  const keys = Object.keys(obj).sort((a, b) => sortingArr.indexOf(a) - sortingArr.indexOf(b))
+  const nextKey = keys[keys.indexOf(key) + 1] || key
+  return screenWidths[nextKey];
+}
+
 function getSizes (ctx: ImageCTX, input: string, opts: ImageSizesOptions) {
   const width = parseSize(opts.modifiers?.width)
   const height = parseSize(opts.modifiers?.height)
@@ -192,19 +200,24 @@ function getSizes (ctx: ImageCTX, input: string, opts: ImageSizesOptions) {
       continue
     }
     if (isFluid) {
-      _cWidth = Math.round((_cWidth / 100) * screenMaxWidth)
+      const calcWidth = opts.mobileFirst ? getNextSize(key, sizes, ctx.options.screens) : screenMaxWidth;
+      _cWidth = Math.round((_cWidth / 100) * calcWidth)
     }
     const _cHeight = hwRatio ? Math.round(_cWidth * hwRatio) : height
     variants.push({
       width: _cWidth,
       size,
       screenMaxWidth,
-      media: `(max-width: ${screenMaxWidth}px)`,
+      media: opts.mobileFirst ? `(min-width: ${screenMaxWidth}px)` : `(max-width: ${screenMaxWidth}px)`,
       src: ctx.$img!(input, { ...opts.modifiers, width: _cWidth, height: _cHeight }, opts)
     })
   }
 
-  variants.sort((v1, v2) => v1.screenMaxWidth - v2.screenMaxWidth)
+  if(opts.mobileFirst) {
+    variants.sort((v1, v2) => v2.screenMaxWidth - v1.screenMaxWidth)
+  } else {
+    variants.sort((v1, v2) => v1.screenMaxWidth - v2.screenMaxWidth)
+  }
 
   const defaultVar = variants[variants.length - 1]
   if (defaultVar) {

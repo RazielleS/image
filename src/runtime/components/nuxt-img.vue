@@ -37,6 +37,7 @@ export default defineComponent({
       return this.$img.getSizes(this.src, {
         ...this.nOptions,
         sizes: this.sizes,
+        mobileFirst: this.mobileFirst,
         modifiers: {
           ...this.nModifiers,
           width: parseSize(this.width),

@@ -25,6 +25,31 @@
       sizes="sm:100vw md:50vw lg:400px"
       loading="lazy"
     />
+    <br>
+
+    <div>
+      Mobile First
+    </div>
+    <nuxt-img
+        src="/logos/nuxt.png"
+        sizes="lg:400px md:50vw sm:100vw"
+        loading="lazy"
+        :mobileFirst="true"
+    />
+    <br>
+    <nuxt-picture
+        src="/logos/nuxt.png"
+        sizes="lg:400px md:50vw sm:100vw"
+        loading="lazy"
+        :mobileFirst="true"
+    />
+    <br>
+    <nuxt-picture
+        src="/logos/nuxt.png"
+        sizes="lg:50vw md:100vw"
+        loading="lazy"
+        :mobileFirst="true"
+    />
   </div>
 </template>
 
